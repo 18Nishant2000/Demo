@@ -1,23 +1,21 @@
-package com.example.jumpingmindsdemo.views
+package com.example.jumpingmindsdemo.views.articles
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.marginTop
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jumpingmindsdemo.DemoApplication
 import com.example.jumpingmindsdemo.R
-import com.example.jumpingmindsdemo.repo.ArticlesRepository
 import com.example.jumpingmindsdemo.repo.remote.data_classes.Article
-import com.example.jumpingmindsdemo.viewModels.ListingScreenViewModel
-import com.example.jumpingmindsdemo.viewModels.ListingScreenViewModelFactory
+import com.example.jumpingmindsdemo.viewModels.articles.ListingScreenViewModel
+import com.example.jumpingmindsdemo.viewModels.articles.ListingScreenViewModelFactory
+import com.example.jumpingmindsdemo.views.ArticleInfoScreen
 
 /**
  * Fragment representing a list of Articles.
@@ -25,19 +23,22 @@ import com.example.jumpingmindsdemo.viewModels.ListingScreenViewModelFactory
 class ListingScreen : Fragment() {
 
     private lateinit var listingScreenViewModel: ListingScreenViewModel
-    private var articleList : MutableList<Article> = mutableListOf()
+    private var articleList: MutableList<Article> = mutableListOf()
     private lateinit var recyclerView: RecyclerView
-    private var newsRecyclerViewAdapter : NewsRecyclerViewAdapter = NewsRecyclerViewAdapter()
-    private lateinit var searchView : SearchView
+    private var newsRecyclerViewAdapter: NewsRecyclerViewAdapter = NewsRecyclerViewAdapter()
+    private lateinit var searchView: SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val articleRepository = (activity?.application as DemoApplication).articlesRepository
-        listingScreenViewModel = ViewModelProvider(this, ListingScreenViewModelFactory(articleRepository)).get(ListingScreenViewModel::class.java)
+        listingScreenViewModel =
+            ViewModelProvider(this, ListingScreenViewModelFactory(articleRepository)).get(
+                ListingScreenViewModel::class.java
+            )
 
         listingScreenViewModel.getArticles().observeForever {
-            if(it.size > 0){
+            if (it.size > 0) {
                 articleList = it
                 newsRecyclerViewAdapter.update(articleList)
             }
@@ -59,7 +60,8 @@ class ListingScreen : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        newsRecyclerViewAdapter.newsRecyclerViewAdapterListener = object : NewsRecyclerViewAdapter.NewsRecyclerViewAdapterListener{
+        newsRecyclerViewAdapter.newsRecyclerViewAdapterListener = object :
+            NewsRecyclerViewAdapter.NewsRecyclerViewAdapterListener {
             override fun onArticleClicked(article: Article) {
                 parentFragmentManager.beginTransaction().apply {
                     replace(R.id.mainContainerView, ArticleInfoScreen.newInstance(article))
@@ -69,13 +71,13 @@ class ListingScreen : Fragment() {
             }
         }
 
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if(newText != null){
+                if (newText != null) {
                     filterList(newText)
                 }
                 return true
@@ -84,25 +86,29 @@ class ListingScreen : Fragment() {
         })
 
         (activity?.application as DemoApplication).search.observeForever {
-            if(it){
+            if (it) {
                 searchView.visibility = View.VISIBLE
-            }else{
+            } else {
                 searchView.visibility = View.GONE
             }
         }
 
     }
+
     private fun filterList(newText: String) {
         var filteredValues: MutableList<Article> = mutableListOf()
         articleList.forEach {
-            if((it.author != null && it.author.lowercase().contains(newText.lowercase())) || it.publishedAt.lowercase().contains(newText.lowercase())){
+            if ((it.author != null && it.author.lowercase()
+                    .contains(newText.lowercase())) || it.publishedAt.lowercase()
+                    .contains(newText.lowercase())
+            ) {
                 filteredValues.add(it)
             }
         }
 
-        if(filteredValues.isEmpty()){
+        if (filteredValues.isEmpty()) {
             Toast.makeText(requireContext(), "No data found", Toast.LENGTH_SHORT).show()
-        }else{
+        } else {
             newsRecyclerViewAdapter.update(filteredValues)
         }
 

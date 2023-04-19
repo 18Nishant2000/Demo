@@ -1,4 +1,4 @@
-package com.example.jumpingmindsdemo
+package com.example.jumpingmindsdemo.utils
 
 interface AsyncReceiver {
 

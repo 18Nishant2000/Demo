@@ -1,26 +1,19 @@
 package com.example.jumpingmindsdemo.repo
 
-import android.content.Context
 import androidx.lifecycle.LiveData
-import com.example.jumpingmindsdemo.repo.local.Favorites
-import com.example.jumpingmindsdemo.repo.local.FavoritesDatabase
-import com.example.jumpingmindsdemo.repo.remote.data_classes.Article
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.example.jumpingmindsdemo.repo.local.favorites.Favorites
+import com.example.jumpingmindsdemo.repo.local.favorites.FavoritesDatabase
 
-class FavoriteArticlesRepository(context : Context) {
+class FavoriteArticlesRepository(
+    private val favoritesDatabase: FavoritesDatabase
+) {
 
-    private val database = FavoritesDatabase.getFavDB(context)
-
-
-    fun getFavoritesArticles() : LiveData<MutableList<Favorites>> {
-        return database.favoritesDao().getArticles()
+    fun getFavoritesArticles(): LiveData<MutableList<Favorites>> {
+        return favoritesDatabase.favoritesDao().getArticles()
     }
 
-    fun deleteFavoriteArticle(favArticle : Favorites){
-        GlobalScope.launch {
-            database.favoritesDao().deleteArticle(favArticle)
-        }
+    suspend fun deleteFavoriteArticle(favArticle: Favorites) {
+        favoritesDatabase.favoritesDao().deleteArticle(favArticle)
     }
 
 }

@@ -1,15 +1,10 @@
-package com.example.jumpingmindsdemo.views
+package com.example.jumpingmindsdemo.views.articles
 
-import android.content.Intent
-import android.text.TextUtils.replace
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jumpingmindsdemo.R
 import com.example.jumpingmindsdemo.repo.remote.data_classes.Article
@@ -18,7 +13,7 @@ class NewsRecyclerViewAdapter(
 ) : RecyclerView.Adapter<NewsRecyclerViewAdapter.ViewHolder>() {
 
 
-    var newsRecyclerViewAdapterListener : NewsRecyclerViewAdapterListener? = null
+    var newsRecyclerViewAdapterListener: NewsRecyclerViewAdapterListener? = null
     var values: MutableList<Article> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -45,13 +40,13 @@ class NewsRecyclerViewAdapter(
         val title: TextView = view.findViewById(R.id.title)
     }
 
-    fun update(data : MutableList<Article>){
+    fun update(data: MutableList<Article>) {
         values.clear()
         values.addAll(data)
         notifyDataSetChanged()
     }
 
-    interface NewsRecyclerViewAdapterListener{
+    interface NewsRecyclerViewAdapterListener {
         fun onArticleClicked(article: Article)
 
     }

@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.example.jumpingmindsdemo.views.FavoritesListingScreen
-import com.example.jumpingmindsdemo.views.ListingScreen
+import com.example.jumpingmindsdemo.views.favorites.FavoritesListingScreen
+import com.example.jumpingmindsdemo.views.articles.ListingScreen
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,11 +29,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+        when (item.itemId) {
             R.id.action_favorite -> {
                 supportFragmentManager.beginTransaction().apply {
                     replace(R.id.mainContainerView, FavoritesListingScreen())
-                    addToBackStack(null
+                    addToBackStack(
+                        null
                     )
                     commit()
                 }

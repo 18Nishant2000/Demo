@@ -3,7 +3,7 @@ package com.example.jumpingmindsdemo.repo
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.jumpingmindsdemo.repo.local.NewsDatabase
+import com.example.jumpingmindsdemo.repo.local.articles.NewsDatabase
 import com.example.jumpingmindsdemo.repo.remote.NewsService
 import com.example.jumpingmindsdemo.repo.remote.data_classes.Article
 import com.example.jumpingmindsdemo.repo.remote.data_classes.News
@@ -16,27 +16,33 @@ import retrofit2.Response
 
 class ArticlesRepository(
     private val newsDatabase: NewsDatabase,
-    private val newsService : NewsService,
-    private val context: Context) {
+    private val newsService: NewsService,
+    private val context: Context
+) {
 
     private val newsLiveData = MutableLiveData<MutableList<Article>>()
 
-    val articles : LiveData<MutableList<Article>>
-    get() = newsLiveData
+    val articles: LiveData<MutableList<Article>>
+        get() = newsLiveData
 
 
-    suspend fun getArticles(page : Int){
-        if(NetworkUtils.isInternetAvailable(context)){
+    suspend fun getArticles(page: Int) {
+        if (NetworkUtils.isInternetAvailable(context)) {
 
             val result = newsService.newsInstance.getTopHeadlines("in", page)
-            result.enqueue(object : Callback<News>{
+            result.enqueue(object : Callback<News> {
                 override fun onResponse(call: Call<News>, response: Response<News>) {
                     response.body()?.let {
 
                         //Saving the articles in DB
                         GlobalScope.launch {
-                            it.articles.forEach{
-                                newsDatabase.newsDao().insertArticles(com.example.jumpingmindsdemo.repo.local.News(0, it))
+                            it.articles.forEach {
+                                newsDatabase.newsDao().insertArticles(
+                                    com.example.jumpingmindsdemo.repo.local.articles.News(
+                                        0,
+                                        it
+                                    )
+                                )
                             }
                         }
 
@@ -50,7 +56,7 @@ class ArticlesRepository(
 
             })
 
-        }else{
+        } else {
             val result = newsDatabase.newsDao().getArticles()
             val articlesList = mutableListOf<Article>()
             result.value?.forEach {

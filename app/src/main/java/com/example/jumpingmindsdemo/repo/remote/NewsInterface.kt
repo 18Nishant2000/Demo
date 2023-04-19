@@ -16,15 +16,18 @@ interface NewsInterface {
 
 
     @GET("top-headlines?apiKey=$API_KEY")
-    fun getTopHeadlines(@Query("country") country : String, @Query("page") page : Int) : Call<News>
+    fun getTopHeadlines(@Query("country") country: String, @Query("page") page: Int): Call<News>
 
 
 }
 
-object NewsService{
-    val newsInstance : NewsInterface
+object NewsService {
+    val newsInstance: NewsInterface
+
     init {
-        val retrofit = Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build()
+        val retrofit =
+            Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create())
+                .build()
         newsInstance = retrofit.create(NewsInterface::class.java)
     }
 }

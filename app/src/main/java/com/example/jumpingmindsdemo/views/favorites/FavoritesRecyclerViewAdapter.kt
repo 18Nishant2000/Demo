@@ -1,4 +1,4 @@
-package com.example.jumpingmindsdemo.views
+package com.example.jumpingmindsdemo.views.favorites
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +7,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jumpingmindsdemo.R
-import com.example.jumpingmindsdemo.repo.local.Favorites
+import com.example.jumpingmindsdemo.repo.local.favorites.Favorites
 import com.example.jumpingmindsdemo.repo.remote.data_classes.Article
 
 /**
@@ -17,7 +17,7 @@ import com.example.jumpingmindsdemo.repo.remote.data_classes.Article
 class FavoritesRecyclerViewAdapter(
 ) : RecyclerView.Adapter<FavoritesRecyclerViewAdapter.ViewHolder>() {
 
-    var favoriteNewsRecyclerViewAdapterListener : FavoritesRecyclerViewAdapterListener? = null
+    var favoriteNewsRecyclerViewAdapterListener: FavoritesRecyclerViewAdapterListener? = null
     var values: MutableList<Favorites> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -47,19 +47,19 @@ class FavoritesRecyclerViewAdapter(
         RecyclerView.ViewHolder(view) {
         val author: TextView = view.findViewById(R.id.author)
         val title: TextView = view.findViewById(R.id.title)
-        val deleteButton : ImageButton = view.findViewById(R.id.delete)
+        val deleteButton: ImageButton = view.findViewById(R.id.delete)
 
     }
 
-    fun update(data : MutableList<Favorites>){
+    fun update(data: MutableList<Favorites>) {
         values.clear()
         values.addAll(data)
         notifyDataSetChanged()
     }
 
-    interface FavoritesRecyclerViewAdapterListener{
+    interface FavoritesRecyclerViewAdapterListener {
         fun onFavoriteArticleClicked(article: Article)
-        fun onFavoriteArticleDeleteClicked(favArticle : Favorites)
+        fun onFavoriteArticleDeleteClicked(favArticle: Favorites)
     }
 
 }

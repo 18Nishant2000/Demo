@@ -1,34 +1,46 @@
-package com.example.jumpingmindsdemo.views
+package com.example.jumpingmindsdemo.views.favorites
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.jumpingmindsdemo.DemoApplication
 import com.example.jumpingmindsdemo.R
-import com.example.jumpingmindsdemo.repo.ArticlesRepository
 import com.example.jumpingmindsdemo.repo.FavoriteArticlesRepository
-import com.example.jumpingmindsdemo.repo.local.Favorites
+import com.example.jumpingmindsdemo.repo.local.favorites.Favorites
 import com.example.jumpingmindsdemo.repo.remote.data_classes.Article
+import com.example.jumpingmindsdemo.viewModels.favorites.FavoritesListingScreenViewModel
+import com.example.jumpingmindsdemo.viewModels.favorites.FavoritesListingScreenViewModelFactory
+import com.example.jumpingmindsdemo.views.ArticleInfoScreen
 
 /**
  * A fragment representing a list of Items.
  */
 class FavoritesListingScreen : Fragment() {
 
-    private var favoritesArticleList : MutableList<Article> = mutableListOf()
     private lateinit var favoritesRecyclerView: RecyclerView
-    private var favoritesRecyclerViewAdapter : FavoritesRecyclerViewAdapter = FavoritesRecyclerViewAdapter()
-    private lateinit var favoritesArticlesRepository : FavoriteArticlesRepository
+    private var favoritesRecyclerViewAdapter: FavoritesRecyclerViewAdapter =
+        FavoritesRecyclerViewAdapter()
+    private lateinit var favoritesArticlesRepository: FavoriteArticlesRepository
+    lateinit var favoritesListingScreenViewModel: FavoritesListingScreenViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        favoritesArticlesRepository = FavoriteArticlesRepository(requireContext())
-        favoritesArticlesRepository.getFavoritesArticles().observeForever{
-            if(it.size > 0){
+        val favoriteArticlesRepository =
+            (activity?.application as DemoApplication).favoriteArticlesRepository
+        favoritesListingScreenViewModel = ViewModelProvider(
+            this,
+            FavoritesListingScreenViewModelFactory(favoriteArticlesRepository)
+        ).get(
+            FavoritesListingScreenViewModel::class.java
+        )
+        favoritesListingScreenViewModel.getFavoritesArticles().observeForever {
+            if (it.size > 0) {
                 favoritesRecyclerViewAdapter.update(it)
             }
         }
@@ -38,7 +50,8 @@ class FavoritesListingScreen : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_favorites_listing_screen_list, container, false)
+        val view =
+            inflater.inflate(R.layout.fragment_favorites_listing_screen_list, container, false)
         favoritesRecyclerView = view.findViewById(R.id.favoriteNewsList)
         favoritesRecyclerView.layoutManager = LinearLayoutManager(view.context)
         favoritesRecyclerView.adapter = favoritesRecyclerViewAdapter
@@ -47,7 +60,8 @@ class FavoritesListingScreen : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        favoritesRecyclerViewAdapter.favoriteNewsRecyclerViewAdapterListener = object : FavoritesRecyclerViewAdapter.FavoritesRecyclerViewAdapterListener{
+        favoritesRecyclerViewAdapter.favoriteNewsRecyclerViewAdapterListener = object :
+            FavoritesRecyclerViewAdapter.FavoritesRecyclerViewAdapterListener {
             override fun onFavoriteArticleClicked(article: Article) {
                 parentFragmentManager.beginTransaction().apply {
                     replace(R.id.mainContainerView, ArticleInfoScreen.newInstance(article))
@@ -57,7 +71,7 @@ class FavoritesListingScreen : Fragment() {
             }
 
             override fun onFavoriteArticleDeleteClicked(favArticle: Favorites) {
-                favoritesArticlesRepository.deleteFavoriteArticle(favArticle)
+                favoritesListingScreenViewModel.deleteFavoriteArticle(favArticle)
             }
 
         }

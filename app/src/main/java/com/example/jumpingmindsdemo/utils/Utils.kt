@@ -1,4 +1,4 @@
-package com.example.jumpingmindsdemo
+package com.example.jumpingmindsdemo.utils
 
 import android.widget.ImageView
 import com.squareup.picasso.Callback
@@ -6,10 +6,10 @@ import com.squareup.picasso.Picasso
 
 class Utils {
 
-    companion object{
+    companion object {
 
-        fun loadImage(path: String, view: ImageView, callback: AsyncReceiver){
-            if(path.isNotEmpty()){
+        fun loadImage(path: String, view: ImageView, callback: AsyncReceiver) {
+            if (path.isNotEmpty()) {
                 if (path.contains("http")) {
                     Picasso.get().load(path).into(view, object : Callback {
                         override fun onSuccess() {
