@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -50,4 +51,14 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'androidx.core:core-splashscreen:1.0.0'
     implementation 'com.squareup.picasso:picasso:2.8'
+
+    //Room Database dependencies
+    implementation("androidx.room:room-runtime:2.5.1")
+
+    implementation("androidx.room:room-ktx:2.5.1")
+    kapt("androidx.room:room-compiler:2.5.1")
+
+    /*//Coroutines dependencies
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0-Beta")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.0-Beta")*/
 }

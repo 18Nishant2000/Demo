@@ -27,6 +27,7 @@ class NewsRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
+        Log.d("Nishant", "article to string ${item.toString()} ")
         holder.author.text = item.author
         holder.title.text = item.title
         holder.itemView.setOnClickListener {

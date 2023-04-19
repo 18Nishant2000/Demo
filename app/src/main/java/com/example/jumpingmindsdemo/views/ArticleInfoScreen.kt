@@ -10,7 +10,12 @@ import androidx.fragment.app.Fragment
 import com.example.jumpingmindsdemo.AsyncReceiver
 import com.example.jumpingmindsdemo.R
 import com.example.jumpingmindsdemo.Utils
+import com.example.jumpingmindsdemo.repo.local.Favorites
+import com.example.jumpingmindsdemo.repo.local.FavoritesDatabase
 import com.example.jumpingmindsdemo.repo.remote.data_classes.Article
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 private const val ARG_PARAM1 = "article"
@@ -21,12 +26,15 @@ private const val ARG_PARAM1 = "article"
 class ArticleInfoScreen : Fragment() {
 
     private var article: Article? = null
+    lateinit var database : FavoritesDatabase
+    lateinit var key : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             article = it.getSerializable(ARG_PARAM1) as Article
         }
+        database = FavoritesDatabase.getFavDB(requireContext())
     }
 
     override fun onCreateView(
@@ -40,6 +48,7 @@ class ArticleInfoScreen : Fragment() {
         view.findViewById<TextView>(R.id.author).text = article?.author
         view.findViewById<TextView>(R.id.desc).text = article?.description
         view.findViewById<TextView>(R.id.pub).text = article?.publishedAt
+        key = "${article?.author}+${article?.publishedAt}"
 
         view.findViewById<ImageView>(R.id.image).apply {
             article?.urlToImage?.let {
@@ -56,6 +65,15 @@ class ArticleInfoScreen : Fragment() {
             }
         }
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        view.findViewById<FloatingActionButton>(R.id.favButton).setOnClickListener {
+            GlobalScope.launch {
+                database.favoritesDao().insertArticle(Favorites(key, article!!))
+            }
+        }
     }
 
     companion object {

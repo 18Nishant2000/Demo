@@ -2,7 +2,10 @@ package com.example.jumpingmindsdemo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.example.jumpingmindsdemo.views.FavoritesListingScreen
 import com.example.jumpingmindsdemo.views.ListingScreen
 
 class MainActivity : AppCompatActivity() {
@@ -20,7 +23,23 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.options, menu)
+        return true
+    }
 
-
-
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.action_favorite -> {
+                supportFragmentManager.beginTransaction().apply {
+                    replace(R.id.mainContainerView, FavoritesListingScreen())
+                    addToBackStack(null
+                    )
+                    commit()
+                }
+                return true
+            }
+        }
+        return false
+    }
 }
