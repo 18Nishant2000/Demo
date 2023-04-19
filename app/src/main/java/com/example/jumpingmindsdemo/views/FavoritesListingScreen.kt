@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jumpingmindsdemo.R
+import com.example.jumpingmindsdemo.repo.ArticlesRepository
 import com.example.jumpingmindsdemo.repo.FavoriteArticlesRepository
 import com.example.jumpingmindsdemo.repo.local.Favorites
 import com.example.jumpingmindsdemo.repo.remote.data_classes.Article

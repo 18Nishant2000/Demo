@@ -3,6 +3,7 @@ package com.example.jumpingmindsdemo.viewModels
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.jumpingmindsdemo.repo.ArticlesRepository
 import com.example.jumpingmindsdemo.repo.remote.NewsService
 import com.example.jumpingmindsdemo.repo.remote.data_classes.Article
 import com.example.jumpingmindsdemo.repo.remote.data_classes.News
@@ -14,7 +15,9 @@ class ListingScreenViewModel : ViewModel() {
 
     var data = MutableLiveData<MutableList<Article>>()
 
+
     fun getNews(){
+
         val news = NewsService.newsInstance.getTopHeadlines("in", 1)
         news.enqueue(object : Callback<News> {
             override fun onResponse(call: Call<News>, response: Response<News>) {

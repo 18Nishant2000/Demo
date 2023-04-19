@@ -1,6 +1,7 @@
 package com.example.jumpingmindsdemo.views
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jumpingmindsdemo.DemoApplication
 import com.example.jumpingmindsdemo.R
+import com.example.jumpingmindsdemo.repo.ArticlesRepository
 import com.example.jumpingmindsdemo.repo.remote.data_classes.Article
 import com.example.jumpingmindsdemo.viewModels.ListingScreenViewModel
 
@@ -26,6 +28,7 @@ class ListingScreen : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private var newsRecyclerViewAdapter : NewsRecyclerViewAdapter
     private lateinit var searchView : SearchView
+    private lateinit var articlesRepository : ArticlesRepository
     init {
         articleList = mutableListOf()
         newsRecyclerViewAdapter = NewsRecyclerViewAdapter()
@@ -34,17 +37,30 @@ class ListingScreen : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        listingScreenViewModel = ViewModelProvider(this).get(ListingScreenViewModel::class.java)
+//        listingScreenViewModel = ViewModelProvider(this).get(ListingScreenViewModel::class.java)
+        articlesRepository = ArticlesRepository(requireContext())
+
+        articlesRepository.getNews()
+
+        articlesRepository.data.observeForever {
+            if(it.size > 0){
+                articleList = it
+                newsRecyclerViewAdapter.update(articleList)
+                Log.d("Nishant", "onCreate: ")
+            }
+            Log.d("Nishant", "onCreate: after if")
+        }
+
 
         //TODO temp call for getting news
-        listingScreenViewModel.getNews()
+//        listingScreenViewModel.getNews()
 
-        listingScreenViewModel.data.observeForever {
+        /*listingScreenViewModel.data.observeForever {
             if(it.size > 0){
                 articleList = it
                 newsRecyclerViewAdapter.update(articleList)
             }
-        }
+        }*/
     }
 
     override fun onCreateView(

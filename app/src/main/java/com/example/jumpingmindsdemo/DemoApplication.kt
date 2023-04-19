@@ -3,7 +3,11 @@ package com.example.jumpingmindsdemo
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.room.Room
+import com.example.jumpingmindsdemo.repo.ArticlesRepository
 import com.example.jumpingmindsdemo.repo.local.FavoritesDatabase
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class DemoApplication : Application() {
 
@@ -26,5 +30,13 @@ class DemoApplication : Application() {
             }
         }
     }
+
+  /*  private fun startLoadingData(){
+        GlobalScope.launch {
+            delay(3000)
+            ArticlesRepository(this@DemoApplication.applicationContext).getNews()
+        }
+
+    }*/
 
 }
