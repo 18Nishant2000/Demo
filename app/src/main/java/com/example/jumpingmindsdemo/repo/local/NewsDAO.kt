@@ -5,18 +5,17 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.jumpingmindsdemo.repo.remote.data_classes.Article
 
 @Dao
 interface NewsDAO {
 
     @Insert
-    suspend fun insertArticles(articleList: News)
+    suspend fun insertArticles(article: News)
 
-    /*@Delete
-    suspend fun deleteArticles(article: Article)
+    @Delete
+    suspend fun deleteArticles(article: News)
 
     @Query("SELECT * FROM news")
-    fun getArticles() : LiveData<MutableList<Article>>*/
+    fun getArticles() : LiveData<MutableList<News>>
 
 }

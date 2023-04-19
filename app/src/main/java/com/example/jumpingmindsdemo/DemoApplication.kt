@@ -2,41 +2,30 @@ package com.example.jumpingmindsdemo
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import androidx.room.Room
 import com.example.jumpingmindsdemo.repo.ArticlesRepository
-import com.example.jumpingmindsdemo.repo.local.FavoritesDatabase
+import com.example.jumpingmindsdemo.repo.local.NewsDatabase
+import com.example.jumpingmindsdemo.repo.remote.NewsService
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class DemoApplication : Application() {
 
+    lateinit var articlesRepository: ArticlesRepository
+    lateinit var newsDatabase: NewsDatabase
+    lateinit var newsService : NewsService
+    var search = MutableLiveData(false)
 
-    init {
-        instance = this
-    }
+    override fun onCreate() {
+        super.onCreate()
 
-    companion object{
-        lateinit var instance : DemoApplication
-        var search = MutableLiveData(false)
-        var favoritesDatabaseInstance : FavoritesDatabase? = null
+        newsDatabase = NewsDatabase.getNewsDB(applicationContext)
+        newsService = NewsService
+        articlesRepository = ArticlesRepository(newsDatabase, newsService, applicationContext)
 
-        fun getFavDBInstance() : FavoritesDatabase{
-            if(favoritesDatabaseInstance != null){
-                return favoritesDatabaseInstance as FavoritesDatabase
-            }
-            return Room.databaseBuilder(instance, FavoritesDatabase::class.java, "favDB").build().also {
-                favoritesDatabaseInstance = it
-            }
-        }
-    }
-
-  /*  private fun startLoadingData(){
+        //For loading the data
         GlobalScope.launch {
-            delay(3000)
-            ArticlesRepository(this@DemoApplication.applicationContext).getNews()
+            articlesRepository.getArticles(1)
         }
-
-    }*/
+    }
 
 }

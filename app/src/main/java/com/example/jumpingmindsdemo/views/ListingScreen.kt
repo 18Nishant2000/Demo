@@ -17,6 +17,7 @@ import com.example.jumpingmindsdemo.R
 import com.example.jumpingmindsdemo.repo.ArticlesRepository
 import com.example.jumpingmindsdemo.repo.remote.data_classes.Article
 import com.example.jumpingmindsdemo.viewModels.ListingScreenViewModel
+import com.example.jumpingmindsdemo.viewModels.ListingScreenViewModelFactory
 
 /**
  * Fragment representing a list of Articles.
@@ -24,43 +25,23 @@ import com.example.jumpingmindsdemo.viewModels.ListingScreenViewModel
 class ListingScreen : Fragment() {
 
     private lateinit var listingScreenViewModel: ListingScreenViewModel
-    private var articleList : MutableList<Article>
+    private var articleList : MutableList<Article> = mutableListOf()
     private lateinit var recyclerView: RecyclerView
-    private var newsRecyclerViewAdapter : NewsRecyclerViewAdapter
+    private var newsRecyclerViewAdapter : NewsRecyclerViewAdapter = NewsRecyclerViewAdapter()
     private lateinit var searchView : SearchView
-    private lateinit var articlesRepository : ArticlesRepository
-    init {
-        articleList = mutableListOf()
-        newsRecyclerViewAdapter = NewsRecyclerViewAdapter()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        listingScreenViewModel = ViewModelProvider(this).get(ListingScreenViewModel::class.java)
-        articlesRepository = ArticlesRepository(requireContext())
+        val articleRepository = (activity?.application as DemoApplication).articlesRepository
+        listingScreenViewModel = ViewModelProvider(this, ListingScreenViewModelFactory(articleRepository)).get(ListingScreenViewModel::class.java)
 
-        articlesRepository.getNews()
-
-        articlesRepository.data.observeForever {
+        listingScreenViewModel.getArticles().observeForever {
             if(it.size > 0){
                 articleList = it
                 newsRecyclerViewAdapter.update(articleList)
-                Log.d("Nishant", "onCreate: ")
             }
-            Log.d("Nishant", "onCreate: after if")
         }
-
-
-        //TODO temp call for getting news
-//        listingScreenViewModel.getNews()
-
-        /*listingScreenViewModel.data.observeForever {
-            if(it.size > 0){
-                articleList = it
-                newsRecyclerViewAdapter.update(articleList)
-            }
-        }*/
     }
 
     override fun onCreateView(
@@ -102,7 +83,7 @@ class ListingScreen : Fragment() {
 
         })
 
-        DemoApplication.search.observeForever {
+        (activity?.application as DemoApplication).search.observeForever {
             if(it){
                 searchView.visibility = View.VISIBLE
             }else{

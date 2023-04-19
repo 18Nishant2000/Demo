@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.action_search -> {
-                DemoApplication.search.value = true
+                (application as DemoApplication).search.value = true
                 return true
             }
 
