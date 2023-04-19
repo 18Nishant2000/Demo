@@ -39,7 +39,15 @@ class MainActivity : AppCompatActivity() {
                 }
                 return true
             }
+
+            R.id.action_search -> {
+                DemoApplication.search.value = true
+                return true
+            }
+
         }
         return false
     }
+
+
 }

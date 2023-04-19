@@ -8,8 +8,10 @@
         app:showAsAction="ifRoom"
         android:title="Fav" />
 
-    <item android:id="@+id/action_settings"
-        android:title="settings"
-        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/baseline_search_24"
+        app:showAsAction="ifRoom"
+        android:title="Search" />
 
 </menu>
