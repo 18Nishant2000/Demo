@@ -7,4 +7,8 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="imageTextBackground">#5D5851</color>
+    <color name="news_item_background">#F6DDCC</color>
+    <color name="fav_item_background">#F5CBA7</color>
+    <color name="info_author_pub_background">#5C5851</color>
 </resources>

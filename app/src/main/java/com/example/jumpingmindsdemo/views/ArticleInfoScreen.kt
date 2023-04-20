@@ -6,13 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.jumpingmindsdemo.utils.AsyncReceiver
+import com.example.jumpingmindsdemo.DemoApplication
+import com.example.jumpingmindsdemo.MainActivity
 import com.example.jumpingmindsdemo.R
-import com.example.jumpingmindsdemo.utils.Utils
 import com.example.jumpingmindsdemo.repo.local.favorites.Favorites
-import com.example.jumpingmindsdemo.repo.local.favorites.FavoritesDatabase
 import com.example.jumpingmindsdemo.repo.remote.data_classes.Article
+import com.example.jumpingmindsdemo.utils.AsyncReceiver
+import com.example.jumpingmindsdemo.utils.Utils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -26,7 +28,6 @@ private const val ARG_PARAM1 = "article"
 class ArticleInfoScreen : Fragment() {
 
     private var article: Article? = null
-    lateinit var database: FavoritesDatabase
     lateinit var key: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +35,7 @@ class ArticleInfoScreen : Fragment() {
         arguments?.let {
             article = it.getSerializable(ARG_PARAM1) as Article
         }
-        database = FavoritesDatabase.getFavDB(requireContext())
+        (activity as MainActivity).supportActionBar!!.hide()
     }
 
     override fun onCreateView(
@@ -51,18 +52,17 @@ class ArticleInfoScreen : Fragment() {
         key = "${article?.author}+${article?.publishedAt}"
 
         view.findViewById<ImageView>(R.id.image).apply {
-            article?.urlToImage?.let {
-                Utils.loadImage(it, this, object : AsyncReceiver {
-                    override fun onSuccess() {
+            Utils.loadImage(article?.urlToImage, this, object : AsyncReceiver {
+                override fun onSuccess() {
 
-                    }
+                }
 
-                    override fun onFailed(error: Error) {
-                        view.findViewById<ImageView>(R.id.image).visibility = View.GONE
-                    }
+                override fun onFailed(error: Error) {
+                    view.findViewById<ImageView>(R.id.image)
+                        .setImageResource(R.drawable.ic_no_image_foreground)
+                }
 
-                })
-            }
+            })
         }
         return view
     }
@@ -71,9 +71,14 @@ class ArticleInfoScreen : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<FloatingActionButton>(R.id.favButton).setOnClickListener {
             GlobalScope.launch {
-                database.favoritesDao().insertArticle(Favorites(key, article!!))
+                (activity?.application as DemoApplication).favoritesDatabase.favoritesDao().insertArticle(Favorites(key, article!!))
             }
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (activity as MainActivity).supportActionBar!!.show()
     }
 
     companion object {

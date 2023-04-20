@@ -1,6 +1,7 @@
 package com.example.jumpingmindsdemo.views.articles
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -88,15 +89,25 @@ class ListingScreen : Fragment() {
         (activity?.application as DemoApplication).search.observeForever {
             if (it) {
                 searchView.visibility = View.VISIBLE
+                recyclerView.translationY = 200F
             } else {
                 searchView.visibility = View.GONE
+                recyclerView.translationY = 0F
             }
         }
 
+
+
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (activity?.application as DemoApplication).search.value = false
     }
 
     private fun filterList(newText: String) {
-        var filteredValues: MutableList<Article> = mutableListOf()
+        val filteredValues: MutableList<Article> = mutableListOf()
         articleList.forEach {
             if ((it.author != null && it.author.lowercase()
                     .contains(newText.lowercase())) || it.publishedAt.lowercase()
@@ -106,11 +117,10 @@ class ListingScreen : Fragment() {
             }
         }
 
-        if (filteredValues.isEmpty()) {
-            Toast.makeText(requireContext(), "No data found", Toast.LENGTH_SHORT).show()
-        } else {
-            newsRecyclerViewAdapter.update(filteredValues)
-        }
+        if (filteredValues.isEmpty())
+            Toast.makeText(requireContext(), "No Article Found", Toast.LENGTH_SHORT).show()
+        newsRecyclerViewAdapter.update(filteredValues)
 
     }
+
 }

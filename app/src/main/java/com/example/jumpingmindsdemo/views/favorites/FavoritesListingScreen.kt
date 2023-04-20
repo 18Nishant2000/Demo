@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jumpingmindsdemo.DemoApplication
+import com.example.jumpingmindsdemo.MainActivity
 import com.example.jumpingmindsdemo.R
 import com.example.jumpingmindsdemo.repo.FavoriteArticlesRepository
 import com.example.jumpingmindsdemo.repo.local.favorites.Favorites
@@ -31,6 +32,8 @@ class FavoritesListingScreen : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        (activity as MainActivity).supportActionBar!!.hide()
+
         val favoriteArticlesRepository =
             (activity?.application as DemoApplication).favoriteArticlesRepository
         favoritesListingScreenViewModel = ViewModelProvider(
@@ -39,11 +42,27 @@ class FavoritesListingScreen : Fragment() {
         ).get(
             FavoritesListingScreenViewModel::class.java
         )
-        favoritesListingScreenViewModel.getFavoritesArticles().observeForever {
+        favoritesListingScreenViewModel.getFavoritesArticles().observe(this@FavoritesListingScreen) {
             if (it.size > 0) {
                 favoritesRecyclerViewAdapter.update(it)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as MainActivity).supportActionBar!!.hide()
+    }
+
+    override fun onPause() {
+        favoritesListingScreenViewModel.getFavoritesArticles().removeObservers(this@FavoritesListingScreen)
+        super.onPause()
+    }
+
+    override fun onStop() {
+        (activity as MainActivity).supportActionBar!!.show()
+        favoritesListingScreenViewModel.getFavoritesArticles().removeObservers(this@FavoritesListingScreen)
+        super.onStop()
     }
 
     override fun onCreateView(
