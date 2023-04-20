@@ -1,6 +1,8 @@
 package com.example.jumpingmindsdemo.repo
 
 import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.jumpingmindsdemo.repo.local.articles.NewsDatabase
@@ -59,7 +61,7 @@ class ArticlesRepository(
         } else {
             val result = newsDatabase.newsDao().getArticles()
             val articlesList = mutableListOf<Article>()
-            result.value?.forEach {
+            result.forEach {
                 articlesList.add(it.article)
             }
             newsLiveData.postValue(articlesList)

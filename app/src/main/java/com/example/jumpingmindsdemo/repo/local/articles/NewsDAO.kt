@@ -17,6 +17,6 @@ interface NewsDAO {
     suspend fun deleteArticles(article: News)
 
     @Query("SELECT * FROM news")
-    fun getArticles(): LiveData<MutableList<News>>
+    fun getArticles(): MutableList<News>
 
 }

@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.jumpingmindsdemo.DemoApplication
 import com.example.jumpingmindsdemo.R
 import com.example.jumpingmindsdemo.repo.remote.data_classes.Article
+import com.example.jumpingmindsdemo.utils.NetworkUtils
+import com.example.jumpingmindsdemo.utils.Utils
 import com.example.jumpingmindsdemo.viewModels.articles.ListingScreenViewModel
 import com.example.jumpingmindsdemo.viewModels.articles.ListingScreenViewModelFactory
 import com.example.jumpingmindsdemo.views.ArticleInfoScreen
@@ -40,8 +42,15 @@ class ListingScreen : Fragment() {
 
         listingScreenViewModel.getArticles().observeForever {
             if (it.size > 0) {
+                if(!NetworkUtils.isInternetAvailable(requireContext()))
+                    Toast.makeText(context, "Please connect with internet for more articles", Toast.LENGTH_SHORT).show()
                 articleList = it
                 newsRecyclerViewAdapter.update(articleList)
+            }else{
+                if(NetworkUtils.isInternetAvailable(requireContext()))
+                    Toast.makeText(context, "No Articles are there", Toast.LENGTH_SHORT).show()
+                else
+                    Toast.makeText(context, "Please Check your internet connection.\nAnd try again", Toast.LENGTH_LONG).show()
             }
         }
     }
