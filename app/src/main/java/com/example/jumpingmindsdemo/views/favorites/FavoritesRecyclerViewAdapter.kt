@@ -15,7 +15,7 @@ import com.example.jumpingmindsdemo.utils.Utils
 
 /**
  *
- * TODO: Replace the implementation with code for your data type.
+ * Adapter for Favorites Articles
  */
 class FavoritesRecyclerViewAdapter(
 ) : RecyclerView.Adapter<FavoritesRecyclerViewAdapter.ViewHolder>() {

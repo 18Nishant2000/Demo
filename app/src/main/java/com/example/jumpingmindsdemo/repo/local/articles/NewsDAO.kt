@@ -1,9 +1,10 @@
 package com.example.jumpingmindsdemo.repo.local.articles
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.jumpingmindsdemo.repo.local.articles.News
 
+/**
+ * NewsDAO for News.
+ */
 @Dao
 interface NewsDAO {
 

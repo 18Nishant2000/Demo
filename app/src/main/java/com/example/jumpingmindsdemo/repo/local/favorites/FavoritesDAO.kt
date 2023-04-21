@@ -7,6 +7,9 @@ import androidx.room.Insert
 import androidx.room.Query
 import com.example.jumpingmindsdemo.repo.local.favorites.Favorites
 
+/**
+ * FavoritesDAO for Favorites Articles.
+ */
 @Dao
 interface FavoritesDAO {
 

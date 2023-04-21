@@ -18,9 +18,13 @@ import com.example.jumpingmindsdemo.views.articles.ListingScreen
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //For splash screen
         installSplashScreen()
+
         setContentView(R.layout.activity_main)
 
+        //Launching the News List Fragment
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.mainContainerView, ListingScreen())
             commit()
@@ -36,7 +40,6 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         (application as DemoApplication).search.value = false
         Log.d("Nishant", "onStop: activity")
-        /*finishAndRemoveTask()*/
         super.onStop()
     }
 

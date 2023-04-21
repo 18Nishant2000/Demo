@@ -16,6 +16,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * Repository Class for providing data of Articles.
+ */
 class ArticlesRepository(
     private val newsDatabase: NewsDatabase,
     private val newsService: NewsService,
@@ -23,10 +26,8 @@ class ArticlesRepository(
 ) {
 
     private val newsLiveData = MutableLiveData<MutableList<Article>>()
-
     val articles: LiveData<MutableList<Article>>
         get() = newsLiveData
-
 
     suspend fun getArticles(page: Int) {
         if (NetworkUtils.isInternetAvailable(context)) {

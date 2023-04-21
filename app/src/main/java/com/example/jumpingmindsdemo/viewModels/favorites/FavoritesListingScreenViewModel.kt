@@ -7,6 +7,9 @@ import com.example.jumpingmindsdemo.repo.local.favorites.Favorites
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+/**
+ * View Model for FavoritesListingScreen.
+ */
 class FavoritesListingScreenViewModel(private val favoriteArticlesRepository: FavoriteArticlesRepository) :
     ViewModel() {
 

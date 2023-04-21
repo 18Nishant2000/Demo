@@ -6,6 +6,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
+/**
+ * Database for Favorites Articles.
+ */
 @Database(entities = [Favorites::class], version = 1)
 @TypeConverters(Convertors::class)
 abstract class FavoritesDatabase : RoomDatabase() {

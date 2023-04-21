@@ -5,6 +5,9 @@ import com.example.jumpingmindsdemo.repo.remote.data_classes.Article
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
+/**
+ * Convertor for News.
+ */
 class NewsConvertor {
 
     @TypeConverter

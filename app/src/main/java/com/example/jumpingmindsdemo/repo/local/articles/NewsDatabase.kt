@@ -6,6 +6,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
+/**
+ * Database for News.
+ */
 @Database(entities = [News::class], version = 1)
 @TypeConverters(NewsConvertor::class)
 abstract class NewsDatabase : RoomDatabase() {

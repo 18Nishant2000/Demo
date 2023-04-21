@@ -20,14 +20,13 @@ import com.example.jumpingmindsdemo.viewModels.favorites.FavoritesListingScreenV
 import com.example.jumpingmindsdemo.views.ArticleInfoScreen
 
 /**
- * A fragment representing a list of Items.
+ * Fragment representing list of Favorites Articles.
  */
 class FavoritesListingScreen : Fragment() {
 
     private lateinit var favoritesRecyclerView: RecyclerView
     private var favoritesRecyclerViewAdapter: FavoritesRecyclerViewAdapter =
         FavoritesRecyclerViewAdapter()
-    private lateinit var favoritesArticlesRepository: FavoriteArticlesRepository
     lateinit var favoritesListingScreenViewModel: FavoritesListingScreenViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,14 +42,15 @@ class FavoritesListingScreen : Fragment() {
         ).get(
             FavoritesListingScreenViewModel::class.java
         )
-        favoritesListingScreenViewModel.getFavoritesArticles().observe(this@FavoritesListingScreen) {
-            if (it.size > 0) {
-                favoritesRecyclerViewAdapter.update(it)
-            }else{
-                Toast.makeText(context, "Favorites are empty!", Toast.LENGTH_SHORT).show()
-                requireActivity().onBackPressed()
+        favoritesListingScreenViewModel.getFavoritesArticles()
+            .observe(this@FavoritesListingScreen) {
+                if (it.size > 0) {
+                    favoritesRecyclerViewAdapter.update(it)
+                } else {
+                    Toast.makeText(context, "Favorites are empty!", Toast.LENGTH_SHORT).show()
+                    requireActivity().onBackPressed()
+                }
             }
-        }
     }
 
     override fun onResume() {
@@ -59,13 +59,15 @@ class FavoritesListingScreen : Fragment() {
     }
 
     override fun onPause() {
-        favoritesListingScreenViewModel.getFavoritesArticles().removeObservers(this@FavoritesListingScreen)
+        favoritesListingScreenViewModel.getFavoritesArticles()
+            .removeObservers(this@FavoritesListingScreen)
         super.onPause()
     }
 
     override fun onStop() {
         (activity as MainActivity).supportActionBar!!.show()
-        favoritesListingScreenViewModel.getFavoritesArticles().removeObservers(this@FavoritesListingScreen)
+        favoritesListingScreenViewModel.getFavoritesArticles()
+            .removeObservers(this@FavoritesListingScreen)
         super.onStop()
     }
 

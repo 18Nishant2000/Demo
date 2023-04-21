@@ -5,7 +5,6 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 
 class NetworkUtils {
-
     companion object {
         fun isInternetAvailable(context: Context): Boolean {
             val connectivityManager =

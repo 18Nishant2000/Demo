@@ -5,9 +5,7 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
 class Utils {
-
     companion object {
-
         fun loadImage(path: String?, view: ImageView, callback: AsyncReceiver) {
             if(path == null) callback.onFailed(Error("Image not loaded"))
             else{

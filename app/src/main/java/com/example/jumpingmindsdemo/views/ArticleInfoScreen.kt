@@ -38,7 +38,7 @@ import kotlinx.coroutines.launch
 private const val ARG_PARAM1 = "article"
 
 /**
- * A fragment for showing article info.
+ * Fragment for showing article info.
  */
 class ArticleInfoScreen : Fragment() {
 
@@ -58,7 +58,6 @@ class ArticleInfoScreen : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-
         val view = inflater.inflate(R.layout.fragment_article_info_screen, container, false)
         view.findViewById<TextView>(R.id.title).text = article?.title
         view.findViewById<TextView>(R.id.author).text = article?.author
@@ -98,8 +97,9 @@ class ArticleInfoScreen : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<FloatingActionButton>(R.id.favButton).setOnClickListener {
             GlobalScope.launch {
-                (activity?.application as DemoApplication).favoritesDatabase.favoritesDao().insertArticle(Favorites(key, article!!))
-                CoroutineScope(Dispatchers.Main).launch{
+                (activity?.application as DemoApplication).favoritesDatabase.favoritesDao()
+                    .insertArticle(Favorites(key, article!!))
+                CoroutineScope(Dispatchers.Main).launch {
                     Toast.makeText(context, "Added to favorites", Toast.LENGTH_SHORT).show()
                 }
             }

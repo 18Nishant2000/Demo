@@ -12,9 +12,11 @@ import com.example.jumpingmindsdemo.repo.remote.data_classes.Article
 import com.example.jumpingmindsdemo.utils.AsyncReceiver
 import com.example.jumpingmindsdemo.utils.Utils
 
+/**
+ * Adapter for Articles.
+ */
 class NewsRecyclerViewAdapter(
 ) : RecyclerView.Adapter<NewsRecyclerViewAdapter.ViewHolder>() {
-
 
     var newsRecyclerViewAdapterListener: NewsRecyclerViewAdapterListener? = null
     var values: MutableList<Article> = mutableListOf()
@@ -31,7 +33,7 @@ class NewsRecyclerViewAdapter(
         holder.title.text = item.title
         holder.pub.text = item.publishedAt
         item.urlToImage
-        Utils.loadImage(item.urlToImage, holder.imageView, object : AsyncReceiver{
+        Utils.loadImage(item.urlToImage, holder.imageView, object : AsyncReceiver {
             override fun onSuccess() {
 
             }
@@ -52,8 +54,8 @@ class NewsRecyclerViewAdapter(
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val author: TextView = view.findViewById(R.id.author)
         val title: TextView = view.findViewById(R.id.title)
-        val pub : TextView = view.findViewById(R.id.pub)
-        val imageView : ImageView = view.findViewById(R.id.image)
+        val pub: TextView = view.findViewById(R.id.pub)
+        val imageView: ImageView = view.findViewById(R.id.image)
     }
 
     fun update(data: MutableList<Article>) {
@@ -64,7 +66,6 @@ class NewsRecyclerViewAdapter(
 
     interface NewsRecyclerViewAdapterListener {
         fun onArticleClicked(article: Article)
-
     }
 
 }

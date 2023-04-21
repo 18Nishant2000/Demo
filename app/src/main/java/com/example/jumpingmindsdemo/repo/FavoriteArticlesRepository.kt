@@ -4,6 +4,9 @@ import androidx.lifecycle.LiveData
 import com.example.jumpingmindsdemo.repo.local.favorites.Favorites
 import com.example.jumpingmindsdemo.repo.local.favorites.FavoritesDatabase
 
+/**
+ * Repository Class for providing data of Favorites Articles.
+ */
 class FavoriteArticlesRepository(
     private val favoritesDatabase: FavoritesDatabase
 ) {

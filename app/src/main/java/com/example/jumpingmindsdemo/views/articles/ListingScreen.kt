@@ -1,7 +1,6 @@
 package com.example.jumpingmindsdemo.views.articles
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,6 @@ import com.example.jumpingmindsdemo.MainActivity
 import com.example.jumpingmindsdemo.R
 import com.example.jumpingmindsdemo.repo.remote.data_classes.Article
 import com.example.jumpingmindsdemo.utils.NetworkUtils
-import com.example.jumpingmindsdemo.utils.Utils
 import com.example.jumpingmindsdemo.viewModels.articles.ListingScreenViewModel
 import com.example.jumpingmindsdemo.viewModels.articles.ListingScreenViewModelFactory
 import com.example.jumpingmindsdemo.views.ArticleInfoScreen
@@ -43,15 +41,23 @@ class ListingScreen : Fragment() {
 
         listingScreenViewModel.getArticles().observeForever {
             if (it.size > 0) {
-                if(!NetworkUtils.isInternetAvailable(requireContext()))
-                    Toast.makeText(context, "Please connect with internet for more articles", Toast.LENGTH_SHORT).show()
+                if (!NetworkUtils.isInternetAvailable(requireContext()))
+                    Toast.makeText(
+                        context,
+                        "Please connect with internet for more articles",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 articleList = it
                 newsRecyclerViewAdapter.update(articleList)
-            }else{
-                if(NetworkUtils.isInternetAvailable(requireContext()))
+            } else {
+                if (NetworkUtils.isInternetAvailable(requireContext()))
                     Toast.makeText(context, "No Articles are there", Toast.LENGTH_SHORT).show()
                 else
-                    Toast.makeText(context, "Please Check your internet connection.\nAnd try again", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        context,
+                        "Please Check your internet connection.\nAnd try again",
+                        Toast.LENGTH_LONG
+                    ).show()
             }
         }
 
@@ -123,7 +129,8 @@ class ListingScreen : Fragment() {
         articleList.forEach {
             if ((it.author != null && it.author.lowercase()
                     .contains(newText.lowercase())) || it.publishedAt.lowercase()
-                    .contains(newText.lowercase()) || it.title.lowercase().contains(newText.lowercase())
+                    .contains(newText.lowercase()) || it.title.lowercase()
+                    .contains(newText.lowercase())
             ) {
                 filteredValues.add(it)
             }
