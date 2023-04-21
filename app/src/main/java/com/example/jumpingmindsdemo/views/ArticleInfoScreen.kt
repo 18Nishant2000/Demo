@@ -32,7 +32,6 @@ class ArticleInfoScreen : Fragment() {
 
     private var article: Article? = null
     lateinit var key: String
-    private var favArticleList : MutableList<Favorites> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

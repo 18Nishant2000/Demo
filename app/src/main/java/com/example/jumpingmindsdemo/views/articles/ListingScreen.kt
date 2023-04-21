@@ -82,6 +82,8 @@ class ListingScreen : Fragment() {
                     addToBackStack(null)
                     commit()
                 }
+                searchView.clearFocus()
+                searchView.setQuery("", true)
             }
         }
 
@@ -124,7 +126,7 @@ class ListingScreen : Fragment() {
         articleList.forEach {
             if ((it.author != null && it.author.lowercase()
                     .contains(newText.lowercase())) || it.publishedAt.lowercase()
-                    .contains(newText.lowercase())
+                    .contains(newText.lowercase()) || it.title.lowercase().contains(newText.lowercase())
             ) {
                 filteredValues.add(it)
             }
