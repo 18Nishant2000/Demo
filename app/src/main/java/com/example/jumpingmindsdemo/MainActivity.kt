@@ -2,10 +2,12 @@ package com.example.jumpingmindsdemo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.Display
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import android.widget.Toast
 import android.window.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -34,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         (application as DemoApplication).search.value = false
         Log.d("Nishant", "onStop: activity")
-        finishAndRemoveTask()
+        /*finishAndRemoveTask()*/
         super.onStop()
     }
 

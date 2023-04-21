@@ -111,9 +111,6 @@ class ListingScreen : Fragment() {
             }
         }
 
-
-
-
     }
 
     override fun onStop() {
