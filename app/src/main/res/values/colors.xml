@@ -11,4 +11,5 @@
     <color name="news_item_background">#F6DDCC</color>
     <color name="fav_item_background">#F5CBA7</color>
     <color name="info_author_pub_background">#5C5851</color>
+    <color name="red">#F44336</color>
 </resources>

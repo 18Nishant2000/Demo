@@ -41,25 +41,13 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_favorite -> {
-                (application as DemoApplication).favoriteArticlesRepository.getFavoritesArticles()
-                    .observeForever {
-                        if (it.isNotEmpty()) {
-                            supportFragmentManager.beginTransaction().apply {
-                                replace(R.id.mainContainerView, FavoritesListingScreen())
-                                addToBackStack(
-                                    null
-                                )
-                                commit()
-                            }
-                        } else {
-                            Toast.makeText(
-                                applicationContext,
-                                "Favorites are empty",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-
+                supportFragmentManager.beginTransaction().apply {
+                    replace(R.id.mainContainerView, FavoritesListingScreen())
+                    addToBackStack(
+                        null
+                    )
+                    commit()
+                }
                 return true
             }
 

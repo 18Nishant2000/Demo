@@ -6,12 +6,14 @@
         android:id="@+id/action_favorite"
         android:icon="@drawable/baseline_favorite_24"
         app:showAsAction="ifRoom"
+        style="@style/optionsIcon"
         android:title="Fav" />
 
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/baseline_search_24"
         app:showAsAction="ifRoom"
+        style="@style/optionsIcon"
         android:title="Search" />
 
 </menu>

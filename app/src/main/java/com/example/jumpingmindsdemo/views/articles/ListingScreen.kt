@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jumpingmindsdemo.DemoApplication
+import com.example.jumpingmindsdemo.MainActivity
 import com.example.jumpingmindsdemo.R
 import com.example.jumpingmindsdemo.repo.remote.data_classes.Article
 import com.example.jumpingmindsdemo.utils.NetworkUtils
@@ -53,6 +54,9 @@ class ListingScreen : Fragment() {
                     Toast.makeText(context, "Please Check your internet connection.\nAnd try again", Toast.LENGTH_LONG).show()
             }
         }
+
+        (activity as MainActivity).supportActionBar!!.title = "Jumping News"
+
     }
 
     override fun onCreateView(

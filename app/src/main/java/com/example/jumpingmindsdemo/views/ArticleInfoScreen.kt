@@ -1,6 +1,9 @@
 package com.example.jumpingmindsdemo.views
 
+import android.content.res.ColorStateList
+import android.graphics.ColorFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +32,7 @@ class ArticleInfoScreen : Fragment() {
 
     private var article: Article? = null
     lateinit var key: String
+    private var favArticleList : MutableList<Favorites> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
