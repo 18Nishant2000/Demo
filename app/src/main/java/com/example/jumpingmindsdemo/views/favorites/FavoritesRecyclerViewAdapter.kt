@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jumpingmindsdemo.R
+import com.example.jumpingmindsdemo.databinding.FragmentFavoritesItemBinding
 import com.example.jumpingmindsdemo.repo.local.favorites.Favorites
 import com.example.jumpingmindsdemo.repo.remote.data_classes.Article
 import com.example.jumpingmindsdemo.utils.AsyncReceiver
@@ -26,31 +27,19 @@ class FavoritesRecyclerViewAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.fragment_favorites_item, parent, false)
-        return ViewHolder(view)
+        val favoritesItemBinding = FragmentFavoritesItemBinding.inflate(inflater, parent, false)
+        return ViewHolder(favoritesItemBinding)
 
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        holder.author.text = item.article.author
-        holder.title.text = item.article.title
-        holder.pub.text = item.article.publishedAt
-        item.article.urlToImage
-        Utils.loadImage(item.article.urlToImage, holder.imageView, object : AsyncReceiver {
-            override fun onSuccess() {
+        holder.favoritesItemBinding.article = item.article
 
-            }
-
-            override fun onFailed(error: Error) {
-                holder.imageView.setImageResource(R.drawable.ic_no_image_foreground)
-            }
-
-        })
         holder.itemView.setOnClickListener {
             favoriteNewsRecyclerViewAdapterListener?.onFavoriteArticleClicked(item.article)
         }
-        holder.deleteButton.setOnClickListener {
+        holder.favoritesItemBinding.delete.setOnClickListener {
             favoriteNewsRecyclerViewAdapterListener?.onFavoriteArticleDeleteClicked(item)
         }
 
@@ -58,14 +47,9 @@ class FavoritesRecyclerViewAdapter(
 
     override fun getItemCount(): Int = values.size
 
-    inner class ViewHolder(view: View) :
-        RecyclerView.ViewHolder(view) {
-        val author: TextView = view.findViewById(R.id.author)
-        val title: TextView = view.findViewById(R.id.title)
-        val deleteButton: ImageButton = view.findViewById(R.id.delete)
-        val imageView : ImageView = view.findViewById(R.id.image)
-        val pub : TextView = view.findViewById(R.id.pub)
-
+    inner class ViewHolder(favoritesItemBinding: FragmentFavoritesItemBinding) :
+        RecyclerView.ViewHolder(favoritesItemBinding.root) {
+        val favoritesItemBinding = favoritesItemBinding
     }
 
     fun update(data: MutableList<Favorites>) {

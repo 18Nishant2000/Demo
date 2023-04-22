@@ -9,7 +9,7 @@ import com.example.jumpingmindsdemo.repo.ArticlesRepository
  */
 class ListingScreenViewModelFactory(private val articlesRepository: ArticlesRepository) :
     ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return ListingScreenViewModel(articlesRepository) as T
     }
 }

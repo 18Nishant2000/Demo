@@ -20,10 +20,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import com.example.jumpingmindsdemo.DemoApplication
 import com.example.jumpingmindsdemo.MainActivity
 import com.example.jumpingmindsdemo.R
+import com.example.jumpingmindsdemo.databinding.FragmentArticleInfoScreenBinding
 import com.example.jumpingmindsdemo.repo.local.favorites.Favorites
 import com.example.jumpingmindsdemo.repo.remote.data_classes.Article
 import com.example.jumpingmindsdemo.utils.AsyncReceiver
@@ -56,14 +58,13 @@ class ArticleInfoScreen : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_article_info_screen, container, false)
-        view.findViewById<TextView>(R.id.title).text = article?.title
-        view.findViewById<TextView>(R.id.author).text = article?.author
-        view.findViewById<TextView>(R.id.desc).text = article?.description
-        view.findViewById<TextView>(R.id.pub).text = article?.publishedAt
-        view.findViewById<Button>(R.id.link).setOnClickListener {
+    ): View {
+
+        val inflater = LayoutInflater.from(requireContext())
+        val articleInfoScreenBinding =
+            FragmentArticleInfoScreenBinding.inflate(inflater, container, false)
+        articleInfoScreenBinding.article = article
+        articleInfoScreenBinding.link.setOnClickListener {
             Intent(Intent.ACTION_VIEW).apply {
                 this.data = Uri.parse(article?.url)
                 startActivity(this)
@@ -71,21 +72,7 @@ class ArticleInfoScreen : Fragment() {
         }
 
         key = "${article?.author}+${article?.publishedAt}"
-
-        view.findViewById<ImageView>(R.id.image).apply {
-            Utils.loadImage(article?.urlToImage, this, object : AsyncReceiver {
-                override fun onSuccess() {
-
-                }
-
-                override fun onFailed(error: Error) {
-                    view.findViewById<ImageView>(R.id.image)
-                        .setImageResource(R.drawable.ic_no_image_foreground)
-                }
-
-            })
-        }
-        return view
+        return articleInfoScreenBinding.root
     }
 
     override fun onResume() {
